@@ -22,8 +22,6 @@ import es.cic.curso25.proy014.globaException.VehiculoException;
 import es.cic.curso25.proy014.model.Vehiculo;
 import es.cic.curso25.proy014.service.VehiculoService;
 
-//TODO todos ests endpoins seran solo para admin basicon del crud con privigegios avanzados
-// con logger
 @RestController
 @RequestMapping(path = "vehiculo")
 public class VehiculoController {
@@ -63,8 +61,38 @@ public class VehiculoController {
     @PutMapping("estacionar/{id}")
     public ResponseEntity<Vehiculo> estacionarVehiculo(@PathVariable long id, @RequestParam int plaza) {
         Vehiculo vehiculo = vehiculoService.get(Long.valueOf(id))
-                .orElseThrow(() -> new VehiculoException("no se puede estacionar una vehiculo que no este registrado"));
+                .orElseThrow(() -> new VehiculoException("no se puede estacionar un vehiculo que no este registrado"));
         Vehiculo vehiculoResultado = vehiculoService.estacionarVehiculo(vehiculo, plaza);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(vehiculoResultado);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("sacar-del-garaje/{id}")
+    public ResponseEntity<Vehiculo> sacarVehiculoDelGaraje(@PathVariable long id) {
+        Vehiculo vehiculo = vehiculoService.get(Long.valueOf(id))
+                .orElseThrow(
+                        () -> new VehiculoException("no se puede sacar del garaje un vehiculo que no este registrado"));
+        Vehiculo vehiculoResultado = vehiculoService.sacarVehiculoDelGaraje(vehiculo);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(vehiculoResultado);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("archivar/{id}")
+    public ResponseEntity<Vehiculo> archivarElVehiculo(@PathVariable long id) {
+        Vehiculo vehiculo = vehiculoService.get(Long.valueOf(id))
+                .orElseThrow(
+                        () -> new VehiculoException("no se puede arhivar un vehiculo no registrado"));
+        Vehiculo vehiculoResultado = vehiculoService.archivarVehiculo(vehiculo, true);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(vehiculoResultado);
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("des-archivar/{id}")
+    public ResponseEntity<Vehiculo> desArchivarElVehiculo(@PathVariable long id) {
+        Vehiculo vehiculo = vehiculoService.get(Long.valueOf(id))
+                .orElseThrow(
+                        () -> new VehiculoException("no se puede des-archivar un vehiculo no registrado"));
+        Vehiculo vehiculoResultado = vehiculoService.archivarVehiculo(vehiculo, false);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(vehiculoResultado);
     }
 
@@ -72,11 +100,9 @@ public class VehiculoController {
     @PutMapping()
     public ResponseEntity<Vehiculo> update(@RequestBody Vehiculo vehiculo) {
         if (vehiculoService.get(Long.valueOf(vehiculo.getId())) == null) {
-            throw new VehiculoException("no se puede actualizar un vehiculo que no este registrado");
+            throw new VehiculoException("no se puede actualizar un vehiculo no registrado");
         }
         Vehiculo vehiculoUpdate = vehiculoService.update(vehiculo);
         return ResponseEntity.ok().body(vehiculoUpdate);
-
     }
-
 }

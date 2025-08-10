@@ -17,7 +17,7 @@ import es.cic.curso25.proy014.repository.PlazaRepository;
 public class PlazaService {
 
     @Autowired
-    private PlazaRepository PlazaRepository;
+    private PlazaRepository plazaRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlazaService.class);
 
@@ -25,20 +25,26 @@ public class PlazaService {
 
     @Transactional(readOnly = true)
     public Optional<Plaza> get(Long Id) {
-        return PlazaRepository.findById(Id);
+        return plazaRepository.findById(Id);
     }
 
     public Plaza create(Plaza plaza) {
-        return PlazaRepository.saveAndFlush(plaza);
+        return plazaRepository.saveAndFlush(plaza);
     }
 
     public Plaza update(Plaza plaza) {
-        return PlazaRepository.saveAndFlush(plaza);
+        return plazaRepository.saveAndFlush(plaza);
     }
 
     @Transactional(readOnly = true)
     public List<Plaza> getAll() {
-        return PlazaRepository.findAll();
+        return plazaRepository.findAll();
+    }
+
+    public void ocuparPlaza(Long id,boolean plazaLibre){
+        Plaza plaza = plazaRepository.findById(id).get();
+        plaza.setEstaLibre(plazaLibre);
+        plazaRepository.save(plaza);
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +30,9 @@ public class Plaza {
     @JsonBackReference
     private List<Vehiculo> vehiculos = new ArrayList<>();
 
+    @Column(nullable = false)
+    private boolean estaLibre;
+
     public Long getId() {
         return Id;
     }
@@ -51,6 +55,14 @@ public class Plaza {
 
     public void setVehiculos(List<Vehiculo> vehiculos) {
         this.vehiculos = vehiculos;
+    }
+
+    public boolean isEstaLibre() {
+        return estaLibre;
+    }
+
+    public void setEstaLibre(boolean estaLibre) {
+        this.estaLibre = estaLibre;
     }
 
     @Override

@@ -35,11 +35,11 @@ public class Vehiculo {
 
     private String Tipo;
 
-    @Column(nullable = false)
-    private boolean Estacionado;
 
     @Column(nullable = false)
     private boolean estaArchivado;
+
+    private int PlazaOcupada; 
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.MERGE, CascadeType.REFRESH })
     @JsonBackReference
@@ -90,20 +90,20 @@ public class Vehiculo {
         Tipo = tipo;
     }
 
-    public boolean isEstacionado() {
-        return Estacionado;
-    }
-
-    public void setEstacionado(boolean estacionado) {
-        Estacionado = estacionado;
-    }
-
     public boolean isEstaArchivado() {
         return estaArchivado;
     }
 
     public void setEstaArchivado(boolean estaArchivado) {
         this.estaArchivado = estaArchivado;
+    }
+
+    public int getPlazaOcupada() {
+        return PlazaOcupada;
+    }
+
+    public void setPlazaOcupada(int plazaOcupada) {
+        PlazaOcupada = plazaOcupada;
     }
 
     public Plaza getPlaza() {

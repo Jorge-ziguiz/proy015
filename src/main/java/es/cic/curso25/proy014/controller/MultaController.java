@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.cic.curso25.proy014.globaException.MultaException;
 import es.cic.curso25.proy014.model.Multa;
 import es.cic.curso25.proy014.service.MultaService;
 
@@ -33,21 +34,20 @@ public class MultaController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/{id}")
     public ResponseEntity<Multa> get(@PathVariable long id) {
-        throw new UnsupportedOperationException();
-
-    }    
-
+        Multa multa = multaService.get(Long.valueOf(id))
+                .orElseThrow(() -> new MultaException("no hay multas registradas con ese ID"));
+        return ResponseEntity.ok().body(multa);
+    }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping()
     public ResponseEntity<List<Multa>> getAll() {
-        throw new UnsupportedOperationException();
-
+        return ResponseEntity.ok().body(multaService.getAll());
     }
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping()
-    public ResponseEntity<Multa> update(@RequestBody Multa Multa) {
+    public ResponseEntity<Multa> pagarMulta(@RequestBody Multa Multa) {
         throw new UnsupportedOperationException();
 
     }

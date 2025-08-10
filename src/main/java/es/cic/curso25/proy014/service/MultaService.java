@@ -18,6 +18,8 @@ public class MultaService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MultaService.class);
 
+    public final static int IMPORTE_POR_DIA = 5;
+
     @Autowired
     private MultaRepository multaRepository;
 
@@ -38,5 +40,6 @@ public class MultaService {
     public List<Multa> getAll() {
         return multaRepository.findAll();
     }
+    
 
 }

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.cic.curso25.proy014.repository.VehiculoRepository;
 import es.cic.curso25.proy014.dto.CrearVehiculoDto;
+import es.cic.curso25.proy014.globaException.PlazaException;
 import es.cic.curso25.proy014.globaException.VehiculoException;
 import es.cic.curso25.proy014.model.Multa;
 import es.cic.curso25.proy014.model.Plaza;
@@ -51,28 +52,61 @@ public class VehiculoService {
         return vehiculoRepository.saveAndFlush(vehiculoConPLaza);
     }
 
-    public Vehiculo createVehiculoUser(Vehiculo vehiculo) {
-        return vehiculoRepository.saveAndFlush(vehiculo);
-    }
-
     public Vehiculo update(Vehiculo vehiculo) {
         return vehiculoRepository.saveAndFlush(vehiculo);
     }
 
     public Vehiculo estacionarVehiculo(Vehiculo vehiculo, int plaza) {
-        boolean estadoVehiculoBd = vehiculoRepository.findByIdEstaEstacionado(vehiculo.getId());
-        if (estadoVehiculoBd) {
+
+        if (plaza > PlazaService.NUMERO_PLAZAS || plaza < 1) {
+            throw new PlazaException("la plaza no exsite");
+
+        } else if (vehiculo.getPlazaOcupada() == 0) {
             throw new VehiculoException("el vehiculo ya esta estacionado");
+
         } else if (vehiculo.getPlaza().getId().equals(Long.valueOf(plaza))) {
             Vehiculo vehiculoMultado = multarVehiculo(vehiculo);
             vehiculoRepository.saveAndFlush(vehiculoMultado);
             throw new VehiculoException("el vehiculo se ha estacionado en una plaza no asignada");
         }
+
+        Plaza plazaOcupada = plazaService.get(Long.valueOf(plaza)).orElse(null);
+        if (!plazaOcupada.isEstaLibre()) {
+            throw new PlazaException("la plaza esta ocupada");
+        }
+
+        plazaService.ocuparPlaza(plazaOcupada.getId(), false);
+        vehiculo.setPlazaOcupada(plaza);
+
+        return vehiculoRepository.saveAndFlush(vehiculo);
+    }
+
+    public Vehiculo sacarVehiculoDelGaraje(Vehiculo vehiculo) {
+        Plaza plaza = plazaService.get(Long.valueOf(vehiculo.getPlazaOcupada())).get();
+        if (vehiculo.getPlazaOcupada() == 0) {
+            throw new VehiculoException("el vehiculo no esta en el garaje");
+        }
+        if(!vehiculo.getMultas().isEmpty()){
+            
+        }
+        plazaService.ocuparPlaza(plaza.getId(), true);
+        vehiculo.setPlazaOcupada(0);
+
+        return vehiculoRepository.saveAndFlush(vehiculo);
+    }
+
+    public Vehiculo archivarVehiculo(Vehiculo vehiculo, boolean archivar) {
+        vehiculo.setEstaArchivado(archivar);
         return vehiculoRepository.saveAndFlush(vehiculo);
     }
 
     @Transactional(readOnly = true)
     public List<Vehiculo> getAll() {
+        return vehiculoRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Vehiculo> getAllActivo() {
         return vehiculoRepository.findAll();
     }
 
@@ -90,8 +124,8 @@ public class VehiculoService {
     }
 
     private Vehiculo multarVehiculo(Vehiculo vehiculo) {
-        // le resto diez dias para que en los test puede comprabar los dias
-        LocalDate fechaMulta = LocalDate.now().minusDays(10);
+        // le resto un rango de diez para que en los test puede comprobar los días
+        LocalDate fechaMulta = LocalDate.now().minusDays((int)Math.floor(Math.random()*9)+1);
 
         Multa multa = new Multa();
         multa.setEstaPagada(false);
@@ -100,6 +134,10 @@ public class VehiculoService {
         vehiculo.getMultas().add(multa);
 
         return vehiculo;
+    }
+
+    private double calcularImporte(Vehiculo vehiculo){
+        throw new UnsupportedOperationException();
     }
 
 }
