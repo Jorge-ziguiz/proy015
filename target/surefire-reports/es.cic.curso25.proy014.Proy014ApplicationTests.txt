@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: es.cic.curso25.proy014.Proy014ApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.84 s -- in es.cic.curso25.proy014.Proy014ApplicationTests
