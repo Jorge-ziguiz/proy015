@@ -30,15 +30,6 @@ public class MultaService {
     public Optional<Multa> get(Long Id) {
         return multaRepository.findById(Id);
     }
-
-    public Multa create(Multa multa) {
-        return multaRepository.saveAndFlush(multa);
-    }
-
-    public Multa update(Multa multa) {
-        return multaRepository.saveAndFlush(multa);
-    }
-
     @Transactional(readOnly = true)
     public List<Multa> getAll() {
         return multaRepository.findAll();

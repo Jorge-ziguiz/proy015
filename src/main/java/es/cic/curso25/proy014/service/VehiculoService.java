@@ -31,7 +31,6 @@ public class VehiculoService {
     @Autowired
     private MultaService multaService;
 
-
     private final static Logger LOGGER = LoggerFactory.getLogger(VehiculoService.class);
 
     @Transactional(readOnly = true)
@@ -50,6 +49,7 @@ public class VehiculoService {
         nuevoVehiculo.setMatricula(vehiculo.getMatricula());
         nuevoVehiculo.setPaisMatricula(vehiculo.getPaisMatricula());
         nuevoVehiculo.setTipo(vehiculo.getTipo());
+        nuevoVehiculo.setPlazaOcupada(0);
 
         Vehiculo vehiculoConPLaza = asignarPlazaVehiculo(nuevoVehiculo);
 
@@ -65,10 +65,10 @@ public class VehiculoService {
         if (plaza > PlazaService.NUMERO_PLAZAS || plaza < 1) {
             throw new PlazaException("la plaza no exsite");
 
-        } else if (vehiculo.getPlazaOcupada() == 0) {
+        } else if (vehiculo.getPlazaOcupada() != 0) {
             throw new VehiculoException("el vehiculo ya esta estacionado");
 
-        } else if (vehiculo.getPlaza().getId().equals(Long.valueOf(plaza))) {
+        } else if (!vehiculo.getPlaza().getId().equals(Long.valueOf(plaza))) {
             Vehiculo vehiculoMultado = multarVehiculo(vehiculo);
             vehiculoRepository.saveAndFlush(vehiculoMultado);
             throw new VehiculoException("el vehiculo se ha estacionado en una plaza no asignada");
@@ -86,11 +86,11 @@ public class VehiculoService {
     }
 
     public Vehiculo sacarVehiculoDelGaraje(Vehiculo vehiculo) {
-        Plaza plaza = plazaService.get(Long.valueOf(vehiculo.getPlazaOcupada())).get();
+        Plaza plaza = plazaService.get(Long.valueOf(vehiculo.getPlazaOcupada())).orElse(null);
         if (vehiculo.getPlazaOcupada() == 0) {
             throw new VehiculoException("el vehiculo no esta en el garaje");
         }
-        if(!vehiculo.getMultas().isEmpty()){
+        if (!vehiculo.getMultas().isEmpty()) {
             calcularImporte(vehiculo);
         }
         plazaService.ocuparPlaza(plaza.getId(), true);
@@ -129,7 +129,7 @@ public class VehiculoService {
 
     private Vehiculo multarVehiculo(Vehiculo vehiculo) {
         // le resto un rango de diez para que en los test puede comprobar los días
-        LocalDate fechaMulta = LocalDate.now().minusDays((int)Math.floor(Math.random()*9)+1);
+        LocalDate fechaMulta = LocalDate.now().minusDays((int) Math.floor(Math.random() * 9) + 1);
 
         Multa multa = new Multa();
         multa.setEstaPagada(false);
@@ -139,7 +139,7 @@ public class VehiculoService {
         return vehiculo;
     }
 
-    private double calcularImporte(Vehiculo vehiculo){
+    private double calcularImporte(Vehiculo vehiculo) {
         return multaService.calcularImporte(vehiculo);
     }
 
