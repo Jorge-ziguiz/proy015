@@ -28,6 +28,10 @@ public class VehiculoService {
     @Autowired
     private PlazaService plazaService;
 
+    @Autowired
+    private MultaService multaService;
+
+
     private final static Logger LOGGER = LoggerFactory.getLogger(VehiculoService.class);
 
     @Transactional(readOnly = true)
@@ -87,7 +91,7 @@ public class VehiculoService {
             throw new VehiculoException("el vehiculo no esta en el garaje");
         }
         if(!vehiculo.getMultas().isEmpty()){
-            
+            calcularImporte(vehiculo);
         }
         plazaService.ocuparPlaza(plaza.getId(), true);
         vehiculo.setPlazaOcupada(0);
@@ -130,14 +134,13 @@ public class VehiculoService {
         Multa multa = new Multa();
         multa.setEstaPagada(false);
         multa.setFecha(fechaMulta);
-
         vehiculo.getMultas().add(multa);
 
         return vehiculo;
     }
 
     private double calcularImporte(Vehiculo vehiculo){
-        throw new UnsupportedOperationException();
+        return multaService.calcularImporte(vehiculo);
     }
 
 }
