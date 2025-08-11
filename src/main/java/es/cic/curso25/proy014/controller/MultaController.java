@@ -46,6 +46,12 @@ public class MultaController {
     }
 
     @PreAuthorize("hasRole('USER')")
+    @GetMapping("maltas-por-coche/{id}")
+    public ResponseEntity<List<Multa>> getAllByVehiculoId(@PathVariable long id) {
+        return ResponseEntity.ok().body(multaService.getAllbyVehiculoId(Long.valueOf(id)));
+    }
+
+    @PreAuthorize("hasRole('USER')")
     @PutMapping()
     public ResponseEntity<Multa> pagarMulta(@RequestBody Multa Multa) {
         throw new UnsupportedOperationException();

@@ -44,6 +44,11 @@ public class MultaService {
         return multaRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<Multa> getAllbyVehiculoId(Long id) {
+        return multaRepository.findMultaByIdVehiculo(id);
+    }
+
     public double calcularImporte(Vehiculo vehiculo) {
         List<Multa> multas = vehiculo.getMultas();
         double importe = 0;
