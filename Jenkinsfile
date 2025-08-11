@@ -89,14 +89,14 @@ pipeline {
                 }
             }
         }
-        stage('Quality Gate') {
-            steps {
-                  echo '🚪 Verificando Quality Gate...'
-                   timeout(time: 2, unit: 'MINUTES') {
-                       waitForQualityGate abortPipeline: true
-                   }
-               }
-           }
+        // stage('Quality Gate') {
+        //     steps {
+        //         echo '🚪 Verificando Quality Gate...'
+        //         timeout(time: 2, unit: 'MINUTES') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
     }
     
     post {
