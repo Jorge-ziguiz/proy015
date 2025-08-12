@@ -29,6 +29,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 
 @SpringBootTest
@@ -69,7 +70,7 @@ public class VehiculoControllerIntegralTest {
         Vehiculo resultado = vehiculoService.create(vehiculoDto);
 
         String jsonResultado = mockMvc
-                .perform(put("/vehiculo/archivar/" + resultado.getId()).with(httpBasic("user", "user123")))
+                .perform(put("/vehiculo/archivar/" + resultado.getId()).with(httpBasic("user", "user123")).with(csrf()))
                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
         Vehiculo resultadoArchivar = objectMapper.readValue(jsonResultado, Vehiculo.class);
@@ -83,7 +84,7 @@ public class VehiculoControllerIntegralTest {
 
         String jsonResultado = mockMvc
                 .perform(post("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
-                        .with(httpBasic("user", "user123")))
+                        .with(httpBasic("user", "user123")).with(csrf()))
                 .andDo(print())
                 .andReturn().getResponse().getContentAsString();
         Vehiculo resultado = objectMapper.readValue(jsonResultado, Vehiculo.class);
@@ -98,7 +99,7 @@ public class VehiculoControllerIntegralTest {
         vehiculoService.archivarVehiculo(resultado, true);
 
         String jsonResultado = mockMvc
-                .perform(put("/vehiculo/des-archivar/" + resultado.getId()).with(httpBasic("user", "user123")))
+                .perform(put("/vehiculo/des-archivar/" + resultado.getId()).with(httpBasic("user", "user123")).with(csrf()))
                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
         Vehiculo resultadoArchivar = objectMapper.readValue(jsonResultado, Vehiculo.class);
@@ -122,7 +123,7 @@ public class VehiculoControllerIntegralTest {
         String jsonResultado = mockMvc
                 .perform(put("/vehiculo/estacionar/" + resultado.getId())
                         .param("plaza", String.valueOf(resultado.getPlaza().getId()))
-                        .with(httpBasic("user", "user123")))
+                        .with(httpBasic("user", "user123")).with(csrf()))
                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
         Vehiculo resultadoEstacionar = objectMapper.readValue(jsonResultado, Vehiculo.class);
@@ -137,7 +138,7 @@ public class VehiculoControllerIntegralTest {
 
         String jsonResultado = mockMvc
                 .perform(get("/vehiculo/" + resultado.getId())
-                        .with(httpBasic("user", "user123")))
+                        .with(httpBasic("user", "user123")).with(csrf()))
                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
         Vehiculo vehiculoResultado = objectMapper.readValue(jsonResultado, Vehiculo.class);
@@ -153,7 +154,7 @@ public class VehiculoControllerIntegralTest {
 
         String jsonResultado = mockMvc
                 .perform(get("/vehiculo")
-                        .with(httpBasic("user", "user123")))
+                        .with(httpBasic("user", "user123")).with(csrf()))
                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
         List<Vehiculo> vehiculosResultado = objectMapper.readValue(jsonResultado, new TypeReference<List<Vehiculo>>() {
@@ -168,7 +169,7 @@ public class VehiculoControllerIntegralTest {
 
         String jsonResultado = mockMvc
                 .perform(put("/vehiculo/sacar-del-garaje/" + resultado.getId())
-                        .with(httpBasic("user", "user123")))
+                        .with(httpBasic("user", "user123")).with(csrf()))
                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
         Vehiculo vehiculoFueraGaraje = objectMapper.readValue(jsonResultado, Vehiculo.class);
@@ -184,7 +185,7 @@ public class VehiculoControllerIntegralTest {
         String jsonRequest = objectMapper.writeValueAsString(resultado);
         String jsonResultado = mockMvc
                 .perform(put("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
-                        .with(httpBasic("admin", "admin123")))
+                        .with(httpBasic("admin", "admin123")).with(csrf()))
                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
         Vehiculo resultadoUpdate = objectMapper.readValue(jsonResultado, Vehiculo.class);
