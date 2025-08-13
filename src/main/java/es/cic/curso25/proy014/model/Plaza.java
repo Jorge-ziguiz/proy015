@@ -11,17 +11,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.id;
+import jakarta.persistence.Id;
+
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.version;
+import jakarta.persistence.Version;
 
 @Entity
 public class Plaza {
-    @id
-    @GeneratedValue(strategy = GenerationType.idENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @version
+   @Version
     private Long version;
 
     @OneToMany(mappedBy = "plaza", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
@@ -39,7 +40,8 @@ public class Plaza {
     }
 
     public void setid(Long id) {
-        id = id;
+        this.id = id;
+
     }
 
     public Long getversion() {
@@ -47,7 +49,7 @@ public class Plaza {
     }
 
     public void setversion(Long version) {
-        version = version;
+          this.version = version;
     }
 
     public List<Vehiculo> getVehiculos() {

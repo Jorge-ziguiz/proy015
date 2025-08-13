@@ -25,7 +25,7 @@ public class PlazaService {
 
     @Transactional(readOnly = true)
     public Optional<Plaza> get(Long id) {
-        return plazaRepository.findByid(id);
+        return plazaRepository.findById(id);
     }
 
     public Plaza create(Plaza plaza) {
@@ -42,7 +42,7 @@ public class PlazaService {
     }
 
     public void ocuparPlaza(Long id,boolean plazaLibre){
-        Plaza plaza = plazaRepository.findByid(id).get();
+        Plaza plaza = plazaRepository.findById(id).get();
         plaza.setEstaLibre(plazaLibre);
         plazaRepository.save(plaza);
     }

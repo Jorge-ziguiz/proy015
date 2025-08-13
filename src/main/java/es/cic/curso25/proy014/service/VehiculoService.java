@@ -36,7 +36,7 @@ public class VehiculoService {
 
     @Transactional(readOnly = true)
     public Optional<Vehiculo> get(Long id) {
-        return vehiculoRepository.findByid(id);
+        return vehiculoRepository.findById(id);
     }
 
     @Transactional(readOnly = true)

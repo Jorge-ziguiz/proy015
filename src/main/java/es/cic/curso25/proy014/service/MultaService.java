@@ -28,7 +28,7 @@ public class MultaService {
 
     @Transactional(readOnly = true)
     public Optional<Multa> get(Long id) {
-        return multaRepository.findByid(id);
+        return multaRepository.findById(id);
     }
     @Transactional(readOnly = true)
     public List<Multa> getAll() {

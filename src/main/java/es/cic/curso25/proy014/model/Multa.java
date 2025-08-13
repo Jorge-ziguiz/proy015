@@ -10,18 +10,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.id;
+import jakarta.persistence.Id;
+
+
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.version;
+import jakarta.persistence.Version;
+
 
 @Entity
 public class Multa {
 
-    @id
-    @GeneratedValue(strategy = GenerationType.idENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @version
+    @Version
     private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY,
@@ -44,7 +47,8 @@ public class Multa {
     }
 
     public void setid(Long id) {
-        id = id;
+        this.id = id;
+
     }
 
     public Long getversion() {
@@ -52,7 +56,7 @@ public class Multa {
     }
 
     public void setversion(Long version) {
-        version = version;
+          this.version = version;
     }
 
     public Vehiculo getVehiculo() {

@@ -1,4 +1,4 @@
-package es.cic.curso25.proy014.globaException;
+package es.cic.curso25.proy014.globaexception;
 
 import java.util.HashMap;
 import java.util.Map;
