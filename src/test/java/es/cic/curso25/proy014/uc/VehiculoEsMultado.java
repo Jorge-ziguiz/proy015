@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import es.cic.curso25.proy014.config.SecurityConfig;
 import es.cic.curso25.proy014.dto.CrearVehiculoDto;
 import es.cic.curso25.proy014.model.Plaza;
 import es.cic.curso25.proy014.model.Vehiculo;
