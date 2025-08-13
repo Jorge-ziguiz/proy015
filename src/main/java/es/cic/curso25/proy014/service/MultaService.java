@@ -19,9 +19,9 @@ import es.cic.curso25.proy014.model.Vehiculo;
 @Transactional
 public class MultaService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(MultaService.class);
+    private static final  Logger LOGGER = LoggerFactory.getLogger(MultaService.class);
 
-    public final static int IMPORTE_POR_DIA = 5;
+    public static final  int IMPORTE_POR_DIA = 5;
 
     @Autowired
     private MultaRepository multaRepository;

@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
         @Bean
-        public UserDetailsService UserDetailsService() {
+        public UserDetailsService userDetailsService() {
                 var userAdmin = User.withUsername("admin")
                                 .password(passwordEncoder().encode("#~@A41#s#ds@(.-"))
                                 .roles("ADMIN")
@@ -30,7 +30,7 @@ public class SecurityConfig {
         }
 
         @Bean
-        public SecurityFilterChain SecurityFilterChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/**").hasAnyRole("USER", "ADMIN")
                                 .anyRequest().authenticated())
                                 .httpBasic(httpBasic -> {

@@ -29,7 +29,7 @@ public class VehiculoController {
     @Autowired
     private VehiculoService vehiculoService;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(VehiculoController.class);
+    private static final  Logger LOGGER = LoggerFactory.getLogger(VehiculoController.class);
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping()

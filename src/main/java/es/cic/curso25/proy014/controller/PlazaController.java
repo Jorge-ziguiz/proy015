@@ -24,7 +24,7 @@ public class PlazaController {
 
     @Autowired
     private PlazaService plazaService;
-    private final static Logger LOGGER = LoggerFactory.getLogger(PlazaController.class);
+    private static final  Logger LOGGER = LoggerFactory.getLogger(PlazaController.class);
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping()

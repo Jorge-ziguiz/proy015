@@ -25,7 +25,7 @@ public class MultaController {
     @Autowired
     private MultaService multaService;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(MultaController.class);
+    private static final  Logger LOGGER = LoggerFactory.getLogger(MultaController.class);
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/{id}")
@@ -49,7 +49,7 @@ public class MultaController {
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping()
-    public ResponseEntity<Multa> pagarMulta(@RequestBody Multa Multa) {
+    public ResponseEntity<Multa> pagarMulta(@RequestBody Multa multa) {
         throw new UnsupportedOperationException();
 
     }

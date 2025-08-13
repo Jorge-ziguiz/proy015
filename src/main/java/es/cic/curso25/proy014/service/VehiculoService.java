@@ -32,7 +32,7 @@ public class VehiculoService {
     @Autowired
     private MultaService multaService;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(VehiculoService.class);
+    private static final  Logger LOGGER = LoggerFactory.getLogger(VehiculoService.class);
 
     @Transactional(readOnly = true)
     public Optional<Vehiculo> get(Long id) {
