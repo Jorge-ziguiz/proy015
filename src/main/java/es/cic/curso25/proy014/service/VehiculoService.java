@@ -112,7 +112,7 @@ public class VehiculoService {
 
     @Transactional(readOnly = true)
     public List<Vehiculo> getAllActivo() {
-        return vehiculoRepository.findAll();
+        return vehiculoRepository.findAllVehiculosActivos();
     }
 
     private Vehiculo asignarPlazaVehiculo(Vehiculo vehiculo) {

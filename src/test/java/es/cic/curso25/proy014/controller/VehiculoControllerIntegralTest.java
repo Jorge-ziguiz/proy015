@@ -93,9 +93,10 @@ public class VehiculoControllerIntegralTest {
 
                 Vehiculo getVehiculo = vehiculoService.get(Long.valueOf(resultado.getid())).orElse(null);
 
-                assertTrue(getVehiculo.getPlaza().getid() != null);
+                Plaza plazaAsignada =getVehiculo.getPlaza();
+                assertTrue(plazaAsignada.getid()!=null);
 
-                assertTrue(vehiculoService.get(Long.valueOf(resultado.getid())) != null);
+                assertTrue(vehiculoService.get(Long.valueOf(resultado.getid()))!=null);
 
         }
 

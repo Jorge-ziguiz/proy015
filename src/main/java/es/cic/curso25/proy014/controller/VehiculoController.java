@@ -29,6 +29,7 @@ public class VehiculoController {
     @Autowired
     private VehiculoService vehiculoService;
 
+
     private static final  Logger LOGGER = LoggerFactory.getLogger(VehiculoController.class);
 
     @PreAuthorize("hasRole('USER')")
@@ -54,7 +55,7 @@ public class VehiculoController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping()
     public ResponseEntity<List<Vehiculo>> getAll() {
-        return ResponseEntity.ok().body(vehiculoService.getAll());
+        return ResponseEntity.ok().body(vehiculoService.getAllActivo());
     }
 
     @PreAuthorize("hasRole('USER')")
