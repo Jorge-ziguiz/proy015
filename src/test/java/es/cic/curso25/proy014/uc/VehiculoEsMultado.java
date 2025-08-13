@@ -10,16 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import es.cic.curso25.proy014.config.SecurityConfig;
 import es.cic.curso25.proy014.dto.CrearVehiculoDto;
 import es.cic.curso25.proy014.model.Plaza;
 import es.cic.curso25.proy014.model.Vehiculo;
 import es.cic.curso25.proy014.service.VehiculoService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,9 +28,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @AutoConfigureMockMvc
 public class VehiculoEsMultado {
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
+    
     @Autowired
     private MockMvc mockMvc;
 
@@ -74,7 +70,7 @@ public class VehiculoEsMultado {
 
         String errorEstacionar = mockMvc.perform(put("/vehiculo/estacionar/" + resultado.getId())
                 .param("plaza", String.valueOf(PlazaIncorrecta))
-                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
+                .with(httpBasic("user", SecurityConfig.hashear("#|@5{31./&}(.-"))).with(csrf()))
                 .andExpect(status().is4xxClientError())
                 .andDo(print()).andReturn().getResponse().getContentAsString();
 

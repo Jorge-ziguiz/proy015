@@ -1,4 +1,8 @@
 package es.cic.curso25.proy014.config;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,12 +21,13 @@ public class SecurityConfig {
         @Bean
         public UserDetailsService UserDetailsService() {
                 var userAdmin = User.withUsername("admin")
-                                .password(passwordEncoder().encode("#~@A41#s#ds@(.-"))
+                                .password(passwordEncoder().encode(SecurityConfig.hashear("#~@A41#s#ds@(.-")))
                                 .roles("ADMIN")
                                 .build();
 
                 var user = User.withUsername("user")
-                                .password(passwordEncoder().encode("#|@5{31./&}(.-"))
+                                .password(passwordEncoder().encode(
+                                                SecurityConfig.hashear(SecurityConfig.hashear("#|@5{31./&}(.-"))))
                                 .roles("USER")
                                 .build();
                 return new InMemoryUserDetailsManager(userAdmin, user);
@@ -39,8 +44,30 @@ public class SecurityConfig {
         }
 
         @Bean
-        public PasswordEncoder passwordEncoder() {
+        private PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder();
+        }
+
+        public static String hashear(String password) {
+                byte[] encodedhash = null;
+                StringBuilder hexString = null;
+                try {
+                        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                        encodedhash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+                        hexString = new StringBuilder(2 * encodedhash.length);
+                        for (int i = 0; i < encodedhash.length; i++) {
+                                String hex = Integer.toHexString(0xff & encodedhash[i]);
+                                if (hex.length() == 1) {
+                                        hexString.append('0');
+                                }
+                                hexString.append(hex);
+                        }
+                } catch (Exception e) {
+                        return null;
+                }
+
+                return hexString.toString();
         }
 
 }
