@@ -69,7 +69,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(put("/vehiculo/archivar/" + resultado.getId())
-                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andDo(print())
                                 .andExpect(status().is2xxSuccessful())
                                 .andReturn().getResponse().getContentAsString();
@@ -85,7 +85,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(post("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
-                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andDo(print())
                                 .andExpect(status().is2xxSuccessful())
                                 .andReturn().getResponse().getContentAsString();
@@ -106,7 +106,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(put("/vehiculo/des-archivar/" + resultado.getId())
-                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -130,7 +130,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc.perform(put("/vehiculo/estacionar/" + resultado.getId())
                                 .param("plaza", String.valueOf(resultado.getPlaza().getId()))
-                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -146,7 +146,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(get("/vehiculo/" + resultado.getId())
-                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -163,7 +163,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(get("/vehiculo")
-                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -186,7 +186,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(put("/vehiculo/sacar-del-garaje/" + resultado.getId())
-                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -203,7 +203,7 @@ public class VehiculoControllerIntegralTest {
                 String jsonRequest = objectMapper.writeValueAsString(resultado);
                 String jsonResultado = mockMvc
                                 .perform(put("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
-                                                .with(httpBasic("admin", "12PasswordSuperSeguro43/")).with(csrf()))
+                                                .with(httpBasic("admin", "#~@A41#s#ds@(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 

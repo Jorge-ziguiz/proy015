@@ -17,12 +17,12 @@ public class SecurityConfig {
         @Bean
         public UserDetailsService UserDetailsService() {
                 var userAdmin = User.withUsername("admin")
-                                .password(passwordEncoder().encode("12PasswordSuperSeguro43/"))
+                                .password(passwordEncoder().encode("#~@A41#s#ds@(.-"))
                                 .roles("ADMIN")
                                 .build();
 
                 var user = User.withUsername("user")
-                                .password(passwordEncoder().encode("12PasswordSeguro63/"))
+                                .password(passwordEncoder().encode("#|@5{31./&}(.-"))
                                 .roles("USER")
                                 .build();
                 return new InMemoryUserDetailsManager(userAdmin, user);
