@@ -91,7 +91,9 @@ public class VehiculoControllerIntegralTest {
                                 .andReturn().getResponse().getContentAsString();
                 Vehiculo resultado = objectMapper.readValue(jsonResultado, Vehiculo.class);
 
-                assertTrue(resultado.getPlaza().getId() != null);
+                Vehiculo getVehiculo = vehiculoService.get(Long.valueOf(resultado.getId())).orElse(null);
+
+                assertTrue(getVehiculo.getPlaza().getId() != null);
 
                 assertTrue(vehiculoService.get(Long.valueOf(resultado.getId())) != null);
 
