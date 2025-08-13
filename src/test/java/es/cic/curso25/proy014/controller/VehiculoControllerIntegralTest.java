@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import es.cic.curso25.proy014.config.SecurityConfig;
 import es.cic.curso25.proy014.dto.CrearVehiculoDto;
 import es.cic.curso25.proy014.model.Plaza;
 import es.cic.curso25.proy014.model.Vehiculo;
@@ -70,7 +69,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(put("/vehiculo/archivar/" + resultado.getId())
-                                                .with(httpBasic("user", SecurityConfig.hashear("#|@5{31./&}(.-"))).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andDo(print())
                                 .andExpect(status().is2xxSuccessful())
                                 .andReturn().getResponse().getContentAsString();
@@ -86,7 +85,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(post("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
-                                                .with(httpBasic("user", SecurityConfig.hashear("#|@5{31./&}(.-"))).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andDo(print())
                                 .andExpect(status().is2xxSuccessful())
                                 .andReturn().getResponse().getContentAsString();
@@ -107,7 +106,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(put("/vehiculo/des-archivar/" + resultado.getId())
-                                                .with(httpBasic("user", SecurityConfig.hashear("#|@5{31./&}(.-"))).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -131,7 +130,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc.perform(put("/vehiculo/estacionar/" + resultado.getId())
                                 .param("plaza", String.valueOf(resultado.getPlaza().getId()))
-                                .with(httpBasic("user", SecurityConfig.hashear("#|@5{31./&}(.-"))).with(csrf()))
+                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -147,7 +146,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(get("/vehiculo/" + resultado.getId())
-                                                .with(httpBasic("user", SecurityConfig.hashear("#|@5{31./&}(.-"))).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -164,7 +163,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(get("/vehiculo")
-                                                .with(httpBasic("user", SecurityConfig.hashear("#|@5{31./&}(.-"))).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -187,7 +186,7 @@ public class VehiculoControllerIntegralTest {
 
                 String jsonResultado = mockMvc
                                 .perform(put("/vehiculo/sacar-del-garaje/" + resultado.getId())
-                                                .with(httpBasic("user", SecurityConfig.hashear("#|@5{31./&}(.-"))).with(csrf()))
+                                                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
@@ -204,7 +203,7 @@ public class VehiculoControllerIntegralTest {
                 String jsonRequest = objectMapper.writeValueAsString(resultado);
                 String jsonResultado = mockMvc
                                 .perform(put("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
-                                                .with(httpBasic("admin", SecurityConfig.hashear("#~@A41#s#ds@(.-")))
+                                                .with(httpBasic("admin", "#~@A41#s#ds@(.-"))
                                                 .with(csrf()))
                                 .andExpect(status().is2xxSuccessful())
                                 .andDo(print()).andReturn().getResponse().getContentAsString();

@@ -70,7 +70,7 @@ public class VehiculoEsMultado {
 
         String errorEstacionar = mockMvc.perform(put("/vehiculo/estacionar/" + resultado.getId())
                 .param("plaza", String.valueOf(PlazaIncorrecta))
-                .with(httpBasic("user", SecurityConfig.hashear("#|@5{31./&}(.-"))).with(csrf()))
+                .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                 .andExpect(status().is4xxClientError())
                 .andDo(print()).andReturn().getResponse().getContentAsString();
 
