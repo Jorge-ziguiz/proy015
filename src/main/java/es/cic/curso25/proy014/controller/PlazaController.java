@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.cic.curso25.proy014.globaException.PlazaException;
+import es.cic.curso25.proy014.globaexception.PlazaException;
 import es.cic.curso25.proy014.model.Plaza;
 import es.cic.curso25.proy014.service.PlazaService;
 
@@ -36,7 +36,7 @@ public class PlazaController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Plaza> get(@PathVariable long id) {
         Plaza plaza = plazaService.get(Long.valueOf(id))
-                .orElseThrow(() -> new PlazaException("no existen plazas con ese ID"));
+                .orElseThrow(() -> new PlazaException("no existen plazas con ese id"));
         return ResponseEntity.ok(plaza);
     }
 
@@ -44,9 +44,9 @@ public class PlazaController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     public ResponseEntity<Plaza> update(@RequestBody Plaza plaza) {
-        if (plaza.getId() == null || (plaza.getId() != null && plazaService.get(plaza.getId()) == null)) {
-            LOGGER.error("no se pude actualizar una plaza sin ID o una plaza que no exista");
-            throw new PlazaException("no se pude actualizar una plaza sin ID o una plaza que no exista");
+        if (plaza.getid() == null || (plaza.getid() != null && plazaService.get(plaza.getid()) == null)) {
+            LOGGER.error("no se pude actualizar una plaza sin id o una plaza que no exista");
+            throw new PlazaException("no se pude actualizar una plaza sin id o una plaza que no exista");
         }
         return ResponseEntity.ok(plazaService.update(plaza));
     }

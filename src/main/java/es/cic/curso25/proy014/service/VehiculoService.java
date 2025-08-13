@@ -1,5 +1,6 @@
 package es.cic.curso25.proy014.service;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.cic.curso25.proy014.repository.VehiculoRepository;
 import es.cic.curso25.proy014.dto.CrearVehiculoDto;
-import es.cic.curso25.proy014.globaException.PlazaException;
-import es.cic.curso25.proy014.globaException.VehiculoException;
+import es.cic.curso25.proy014.globaexception.PlazaException;
+import es.cic.curso25.proy014.globaexception.VehiculoException;
 import es.cic.curso25.proy014.model.Multa;
 import es.cic.curso25.proy014.model.Plaza;
 import es.cic.curso25.proy014.model.Vehiculo;
@@ -34,8 +35,8 @@ public class VehiculoService {
     private final static Logger LOGGER = LoggerFactory.getLogger(VehiculoService.class);
 
     @Transactional(readOnly = true)
-    public Optional<Vehiculo> get(Long Id) {
-        return vehiculoRepository.findById(Id);
+    public Optional<Vehiculo> get(Long id) {
+        return vehiculoRepository.findByid(id);
     }
 
     @Transactional(readOnly = true)
@@ -68,7 +69,7 @@ public class VehiculoService {
         } else if (vehiculo.getPlazaOcupada() != 0) {
             throw new VehiculoException("el vehiculo ya esta estacionado");
 
-        } else if (!vehiculo.getPlaza().getId().equals(Long.valueOf(plaza))) {
+        } else if (!vehiculo.getPlaza().getid().equals(Long.valueOf(plaza))) {
             Vehiculo vehiculoMultado = multarVehiculo(vehiculo);
             vehiculoRepository.saveAndFlush(vehiculoMultado);
             throw new VehiculoException("el vehiculo se ha estacionado en una plaza no asignada");
@@ -79,9 +80,8 @@ public class VehiculoService {
             throw new PlazaException("la plaza esta ocupada");
         }
 
-        plazaService.ocuparPlaza(plazaOcupada.getId(), false);
+        plazaService.ocuparPlaza(plazaOcupada.getid(), false);
         vehiculo.setPlazaOcupada(plaza);
-
 
         return vehiculoRepository.saveAndFlush(vehiculo);
     }
@@ -94,7 +94,7 @@ public class VehiculoService {
         if (!vehiculo.getMultas().isEmpty()) {
             calcularImporte(vehiculo);
         }
-        plazaService.ocuparPlaza(plaza.getId(), true);
+        plazaService.ocuparPlaza(plaza.getid(), true);
         vehiculo.setPlazaOcupada(0);
 
         return vehiculoRepository.saveAndFlush(vehiculo);
@@ -131,7 +131,9 @@ public class VehiculoService {
 
     private Vehiculo multarVehiculo(Vehiculo vehiculo) {
         // le resto un rango de diez para que en los test puede comprobar los días
-        LocalDate fechaMulta = LocalDate.now().minusDays((int) Math.floor(Math.random() * 9) + 1);
+        SecureRandom secureRandom = new SecureRandom();
+
+        LocalDate fechaMulta = LocalDate.now().minusDays(secureRandom.nextInt(9) + 1);
 
         Multa multa = new Multa();
         multa.setEstaPagada(false);

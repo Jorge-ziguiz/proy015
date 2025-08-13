@@ -53,7 +53,7 @@ public class VehiculoEsMultado {
 
     @Test
     @Transactional
-    void testEstacionarVehiculoEnPlazaIncorrecta() throws Exception {
+    void testEstacionarVehiculoEnplazaIncorrecta() throws Exception {
         Vehiculo resultado = vehiculoService.create(vehiculoDto);
 
         if (!resultado.getPlaza().isEstaLibre()) {
@@ -64,11 +64,11 @@ public class VehiculoEsMultado {
             vehiculoService.update(resultado);
         }
 
-        int plazaCorrecta = (int) resultado.getPlaza().getId().longValue();
-        int PlazaIncorrecta = (plazaCorrecta > 0) ? plazaCorrecta + 1 : plazaCorrecta - 1;
+        int plazaCorrecta = (int) resultado.getPlaza().getid().longValue();
+        int plazaIncorrecta = (plazaCorrecta > 0) ? plazaCorrecta + 1 : plazaCorrecta - 1;
 
-        String errorEstacionar = mockMvc.perform(put("/vehiculo/estacionar/" + resultado.getId())
-                .param("plaza", String.valueOf(PlazaIncorrecta))
+        String errorEstacionar = mockMvc.perform(put("/vehiculo/estacionar/" + resultado.getid())
+                .param("plaza", String.valueOf(plazaIncorrecta))
                 .with(httpBasic("user", "#|@5{31./&}(.-")).with(csrf()))
                 .andExpect(status().is4xxClientError())
                 .andDo(print()).andReturn().getResponse().getContentAsString();

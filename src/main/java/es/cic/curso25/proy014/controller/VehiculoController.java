@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.cic.curso25.proy014.dto.CrearVehiculoDto;
-import es.cic.curso25.proy014.globaException.VehiculoException;
+import es.cic.curso25.proy014.globaexception.VehiculoException;
 import es.cic.curso25.proy014.model.Vehiculo;
 import es.cic.curso25.proy014.service.VehiculoService;
 
@@ -99,7 +99,7 @@ public class VehiculoController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     public ResponseEntity<Vehiculo> update(@RequestBody Vehiculo vehiculo) {
-        if (vehiculoService.get(Long.valueOf(vehiculo.getId())) == null) {
+        if (vehiculoService.get(Long.valueOf(vehiculo.getid())) == null) {
             throw new VehiculoException("no se puede actualizar un vehiculo no registrado");
         }
         Vehiculo vehiculoUpdate = vehiculoService.update(vehiculo);

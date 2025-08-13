@@ -11,18 +11,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Version;
+import jakarta.persistence.version;
 
 @Entity
 public class Plaza {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    @id
+    @GeneratedValue(strategy = GenerationType.idENTITY)
+    private Long id;
 
-    @Version
-    private Long Version;
+    @version
+    private Long version;
 
     @OneToMany(mappedBy = "plaza", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
             CascadeType.REFRESH,
@@ -34,20 +34,20 @@ public class Plaza {
     @Column(nullable = false)
     private boolean estaLibre;
 
-    public Long getId() {
-        return Id;
+    public Long getid() {
+        return id;
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public void setid(Long id) {
+        id = id;
     }
 
-    public Long getVersion() {
-        return Version;
+    public Long getversion() {
+        return version;
     }
 
-    public void setVersion(Long version) {
-        Version = version;
+    public void setversion(Long version) {
+        version = version;
     }
 
     public List<Vehiculo> getVehiculos() {
@@ -70,7 +70,7 @@ public class Plaza {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((Id == null) ? 0 : Id.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
 
@@ -83,10 +83,10 @@ public class Plaza {
         if (getClass() != obj.getClass())
             return false;
         Plaza other = (Plaza) obj;
-        if (Id == null) {
-            if (other.Id != null)
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        } else if (!Id.equals(other.Id))
+        } else if (!id.equals(other.id))
             return false;
 
         return true;

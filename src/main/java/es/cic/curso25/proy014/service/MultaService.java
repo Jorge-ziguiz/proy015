@@ -27,8 +27,8 @@ public class MultaService {
     private MultaRepository multaRepository;
 
     @Transactional(readOnly = true)
-    public Optional<Multa> get(Long Id) {
-        return multaRepository.findById(Id);
+    public Optional<Multa> get(Long id) {
+        return multaRepository.findByid(id);
     }
     @Transactional(readOnly = true)
     public List<Multa> getAll() {
@@ -36,8 +36,8 @@ public class MultaService {
     }
 
     @Transactional(readOnly = true)
-    public List<Multa> getAllbyVehiculoId(Long id) {
-        return multaRepository.findMultaByIdVehiculo(id);
+    public List<Multa> getAllbyVehiculoid(Long id) {
+        return multaRepository.findMultaByidVehiculo(id);
     }
 
     public double calcularImporte(Vehiculo vehiculo) {

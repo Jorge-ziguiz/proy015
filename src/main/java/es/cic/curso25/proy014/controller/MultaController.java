@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.cic.curso25.proy014.globaException.MultaException;
+import es.cic.curso25.proy014.globaexception.MultaException;
 import es.cic.curso25.proy014.model.Multa;
 import es.cic.curso25.proy014.service.MultaService;
 
@@ -31,7 +31,7 @@ public class MultaController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Multa> get(@PathVariable long id) {
         Multa multa = multaService.get(Long.valueOf(id))
-                .orElseThrow(() -> new MultaException("no hay multas registradas con ese ID"));
+                .orElseThrow(() -> new MultaException("no hay multas registradas con ese id"));
         return ResponseEntity.ok().body(multa);
     }
 
@@ -43,8 +43,8 @@ public class MultaController {
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("maltas-por-coche/{id}")
-    public ResponseEntity<List<Multa>> getAllByVehiculoId(@PathVariable long id) {
-        return ResponseEntity.ok().body(multaService.getAllbyVehiculoId(Long.valueOf(id)));
+    public ResponseEntity<List<Multa>> getAllByVehiculoid(@PathVariable long id) {
+        return ResponseEntity.ok().body(multaService.getAllbyVehiculoid(Long.valueOf(id)));
     }
 
     @PreAuthorize("hasRole('USER')")
