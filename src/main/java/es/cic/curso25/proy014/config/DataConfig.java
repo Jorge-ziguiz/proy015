@@ -24,6 +24,7 @@ public class DataConfig {
 
                 for (int i = 0; i < numeroPLazas; i++) {
                     Plaza plaza = new Plaza();
+                    plaza.setEstaLibre(true);
                     plazaService.create(plaza);
                 }
             }

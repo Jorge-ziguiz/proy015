@@ -82,6 +82,7 @@ public class VehiculoService {
         plazaService.ocuparPlaza(plazaOcupada.getId(), false);
         vehiculo.setPlazaOcupada(plaza);
 
+
         return vehiculoRepository.saveAndFlush(vehiculo);
     }
 
@@ -121,6 +122,7 @@ public class VehiculoService {
 
             if (plaza.getVehiculos().size() < 5) {
                 vehiculo.setPlaza(plaza);
+                plaza.getVehiculos().add(vehiculo);
                 break;
             }
         }

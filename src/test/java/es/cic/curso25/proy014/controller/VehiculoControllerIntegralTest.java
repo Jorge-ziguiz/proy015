@@ -1,6 +1,5 @@
 package es.cic.curso25.proy014.controller;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
@@ -37,160 +35,179 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @Transactional
 public class VehiculoControllerIntegralTest {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+        @Autowired
+        private ObjectMapper objectMapper;
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Autowired
-    private VehiculoService vehiculoService;
+        @Autowired
+        private VehiculoService vehiculoService;
 
-    private Vehiculo vehiculo;
+        private Vehiculo vehiculo;
 
-    private CrearVehiculoDto vehiculoDto;
+        private CrearVehiculoDto vehiculoDto;
 
-    @BeforeEach
-    void setUp() {
-        vehiculo = new Vehiculo();
-        vehiculo.setMatricula("ABC123");
-        vehiculo.setTipo("turismo");
-        vehiculo.setPaisMatricula("spain");
+        @BeforeEach
+        void setUp() {
+                vehiculo = new Vehiculo();
+                vehiculo.setMatricula("ABC123");
+                vehiculo.setTipo("turismo");
+                vehiculo.setPaisMatricula("spain");
 
-        vehiculoDto = new CrearVehiculoDto();
-        vehiculoDto.setMatricula("ABC123");
-        vehiculoDto.setTipo("turismo");
-        vehiculoDto.setPaisMatricula("spain");
-    }
-
-    @Test
-
-    void testArchivarElVehiculo() throws Exception {
-
-        Vehiculo resultado = vehiculoService.create(vehiculoDto);
-
-        String jsonResultado = mockMvc
-                .perform(put("/vehiculo/archivar/" + resultado.getId()).with(httpBasic("user", "user123")).with(csrf()))
-                .andDo(print()).andReturn().getResponse().getContentAsString();
-
-        Vehiculo resultadoArchivar = objectMapper.readValue(jsonResultado, Vehiculo.class);
-        assertEquals(resultadoArchivar.isEstaArchivado(), true);
-    }
-
-    @Test
-    void testCreate() throws Exception {
-
-        String jsonRequest = objectMapper.writeValueAsString(vehiculoDto);
-
-        String jsonResultado = mockMvc
-                .perform(post("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
-                        .with(httpBasic("user", "user123")).with(csrf()))
-                .andDo(print())
-                .andReturn().getResponse().getContentAsString();
-        Vehiculo resultado = objectMapper.readValue(jsonResultado, Vehiculo.class);
-
-        assertTrue(vehiculoService.get(Long.valueOf(resultado.getId())) != null);
-
-    }
-
-    @Test
-    void testDesArchivarElVehiculo() throws Exception {
-        Vehiculo resultado = vehiculoService.create(vehiculoDto);
-        vehiculoService.archivarVehiculo(resultado, true);
-
-        String jsonResultado = mockMvc
-                .perform(put("/vehiculo/des-archivar/" + resultado.getId()).with(httpBasic("user", "user123")).with(csrf()))
-                .andDo(print()).andReturn().getResponse().getContentAsString();
-
-        Vehiculo resultadoArchivar = objectMapper.readValue(jsonResultado, Vehiculo.class);
-        assertEquals(resultadoArchivar.isEstaArchivado(), false);
-
-    }
-
-    @Test
-    @Transactional
-    void testEstacionarVehiculo() throws Exception {
-        Vehiculo resultado = vehiculoService.create(vehiculoDto);
-
-        if (!resultado.getPlaza().isEstaLibre()) {
-            Plaza update = resultado.getPlaza();
-            update.setEstaLibre(true);
-            vehiculo.setPlazaOcupada(0);
-            vehiculo.setPlaza(update);
-            vehiculoService.update(resultado);
+                vehiculoDto = new CrearVehiculoDto();
+                vehiculoDto.setMatricula("ABC123");
+                vehiculoDto.setTipo("turismo");
+                vehiculoDto.setPaisMatricula("spain");
         }
 
-        String jsonResultado = mockMvc
-                .perform(put("/vehiculo/estacionar/" + resultado.getId())
-                        .param("plaza", String.valueOf(resultado.getPlaza().getId()))
-                        .with(httpBasic("user", "user123")).with(csrf()))
-                .andDo(print()).andReturn().getResponse().getContentAsString();
+        @Test
 
-        Vehiculo resultadoEstacionar = objectMapper.readValue(jsonResultado, Vehiculo.class);
+        void testArchivarElVehiculo() throws Exception {
 
-        assertTrue(resultadoEstacionar.getPlazaOcupada() != 0);
+                Vehiculo resultado = vehiculoService.create(vehiculoDto);
 
-    }
+                String jsonResultado = mockMvc
+                                .perform(put("/vehiculo/archivar/" + resultado.getId())
+                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                .andDo(print())
+                                .andExpect(status().is2xxSuccessful())
+                                .andReturn().getResponse().getContentAsString();
 
-    @Test
-    void testGet() throws Exception {
-        Vehiculo resultado = vehiculoService.create(vehiculoDto);
+                Vehiculo resultadoArchivar = objectMapper.readValue(jsonResultado, Vehiculo.class);
+                assertEquals(resultadoArchivar.isEstaArchivado(), true);
+        }
 
-        String jsonResultado = mockMvc
-                .perform(get("/vehiculo/" + resultado.getId())
-                        .with(httpBasic("user", "user123")).with(csrf()))
-                .andDo(print()).andReturn().getResponse().getContentAsString();
+        @Test
+        void testCreate() throws Exception {
 
-        Vehiculo vehiculoResultado = objectMapper.readValue(jsonResultado, Vehiculo.class);
+                String jsonRequest = objectMapper.writeValueAsString(vehiculoDto);
 
-        assertEquals(vehiculoResultado.getMatricula(), vehiculoDto.getMatricula());
-        assertEquals(vehiculoResultado.getPaisMatricula(), vehiculoDto.getPaisMatricula());
-    }
+                String jsonResultado = mockMvc
+                                .perform(post("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
+                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                .andDo(print())
+                                .andExpect(status().is2xxSuccessful())
+                                .andReturn().getResponse().getContentAsString();
+                Vehiculo resultado = objectMapper.readValue(jsonResultado, Vehiculo.class);
 
-    @Test
-    void testGetAll() throws Exception {
+                assertTrue(resultado.getPlaza().getId() != null);
 
-        vehiculoService.create(vehiculoDto);
+                assertTrue(vehiculoService.get(Long.valueOf(resultado.getId())) != null);
 
-        String jsonResultado = mockMvc
-                .perform(get("/vehiculo")
-                        .with(httpBasic("user", "user123")).with(csrf()))
-                .andDo(print()).andReturn().getResponse().getContentAsString();
+        }
 
-        List<Vehiculo> vehiculosResultado = objectMapper.readValue(jsonResultado, new TypeReference<List<Vehiculo>>() {
-        });
+        @Test
+        void testDesArchivarElVehiculo() throws Exception {
+                Vehiculo resultado = vehiculoService.create(vehiculoDto);
+                vehiculoService.archivarVehiculo(resultado, true);
 
-        assertTrue(!vehiculosResultado.isEmpty());
-    }
+                String jsonResultado = mockMvc
+                                .perform(put("/vehiculo/des-archivar/" + resultado.getId())
+                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                .andExpect(status().is2xxSuccessful())
+                                .andDo(print()).andReturn().getResponse().getContentAsString();
 
-    @Test
-    void testSacarVehiculoDelGaraje() throws Exception {
-        Vehiculo resultado = vehiculoService.create(vehiculoDto);
+                Vehiculo resultadoArchivar = objectMapper.readValue(jsonResultado, Vehiculo.class);
+                assertEquals(resultadoArchivar.isEstaArchivado(), false);
 
-        String jsonResultado = mockMvc
-                .perform(put("/vehiculo/sacar-del-garaje/" + resultado.getId())
-                        .with(httpBasic("user", "user123")).with(csrf()))
-                .andDo(print()).andReturn().getResponse().getContentAsString();
+        }
 
-        Vehiculo vehiculoFueraGaraje = objectMapper.readValue(jsonResultado, Vehiculo.class);
-        assertEquals(vehiculoFueraGaraje.getPlazaOcupada(), 0);
+        @Test
+        @Transactional
+        void testEstacionarVehiculo() throws Exception {
+                Vehiculo resultado = vehiculoService.create(vehiculoDto);
 
-    }
+                if (!resultado.getPlaza().isEstaLibre()) {
+                        Plaza update = resultado.getPlaza();
+                        update.setEstaLibre(true);
+                        vehiculo.setPlazaOcupada(0);
+                        vehiculo.setPlaza(update);
+                        vehiculoService.update(resultado);
+                }
 
-    @Test
-    void testUpdate() throws Exception {
-        Vehiculo resultado = vehiculoService.create(vehiculoDto);
-        resultado.setTipo("moto");
+                String jsonResultado = mockMvc.perform(put("/vehiculo/estacionar/" + resultado.getId())
+                                .param("plaza", String.valueOf(resultado.getPlaza().getId()))
+                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                .andExpect(status().is2xxSuccessful())
+                                .andDo(print()).andReturn().getResponse().getContentAsString();
 
-        String jsonRequest = objectMapper.writeValueAsString(resultado);
-        String jsonResultado = mockMvc
-                .perform(put("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
-                        .with(httpBasic("admin", "admin123")).with(csrf()))
-                .andDo(print()).andReturn().getResponse().getContentAsString();
+                Vehiculo resultadoEstacionar = objectMapper.readValue(jsonResultado, Vehiculo.class);
 
-        Vehiculo resultadoUpdate = objectMapper.readValue(jsonResultado, Vehiculo.class);
+                assertTrue(resultadoEstacionar.getPlazaOcupada() != 0);
 
-        assertEquals(resultadoUpdate.getTipo(), "moto");
+        }
 
-    }
+        @Test
+        void testGet() throws Exception {
+                Vehiculo resultado = vehiculoService.create(vehiculoDto);
+
+                String jsonResultado = mockMvc
+                                .perform(get("/vehiculo/" + resultado.getId())
+                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                .andExpect(status().is2xxSuccessful())
+                                .andDo(print()).andReturn().getResponse().getContentAsString();
+
+                Vehiculo vehiculoResultado = objectMapper.readValue(jsonResultado, Vehiculo.class);
+
+                assertEquals(vehiculoResultado.getMatricula(), vehiculoDto.getMatricula());
+                assertEquals(vehiculoResultado.getPaisMatricula(), vehiculoDto.getPaisMatricula());
+        }
+
+        @Test
+        void testGetAll() throws Exception {
+
+                vehiculoService.create(vehiculoDto);
+
+                String jsonResultado = mockMvc
+                                .perform(get("/vehiculo")
+                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                .andExpect(status().is2xxSuccessful())
+                                .andDo(print()).andReturn().getResponse().getContentAsString();
+
+                List<Vehiculo> vehiculosResultado = objectMapper.readValue(jsonResultado,
+                                new TypeReference<List<Vehiculo>>() {
+                                });
+
+                assertTrue(!vehiculosResultado.isEmpty());
+        }
+
+        @Test
+        void testSacarVehiculoDelGaraje() throws Exception {
+                Vehiculo resultado = vehiculoService.create(vehiculoDto);
+
+                Vehiculo vehiculoBaseDatos = vehiculoService.get(Long.valueOf(resultado.getId())).orElseGet(null);
+
+                Plaza plaza = vehiculoBaseDatos.getPlaza();
+
+                vehiculoService.estacionarVehiculo(resultado, (int) plaza.getId().longValue());
+
+                String jsonResultado = mockMvc
+                                .perform(put("/vehiculo/sacar-del-garaje/" + resultado.getId())
+                                                .with(httpBasic("user", "12PasswordSeguro63/")).with(csrf()))
+                                .andExpect(status().is2xxSuccessful())
+                                .andDo(print()).andReturn().getResponse().getContentAsString();
+
+                Vehiculo vehiculoFueraGaraje = objectMapper.readValue(jsonResultado, Vehiculo.class);
+                assertEquals(vehiculoFueraGaraje.getPlazaOcupada(), 0);
+
+        }
+
+        @Test
+        void testUpdate() throws Exception {
+                Vehiculo resultado = vehiculoService.create(vehiculoDto);
+                resultado.setTipo("moto");
+
+                String jsonRequest = objectMapper.writeValueAsString(resultado);
+                String jsonResultado = mockMvc
+                                .perform(put("/vehiculo").contentType(MediaType.APPLICATION_JSON).content(jsonRequest)
+                                                .with(httpBasic("admin", "12PasswordSuperSeguro43/")).with(csrf()))
+                                .andExpect(status().is2xxSuccessful())
+                                .andDo(print()).andReturn().getResponse().getContentAsString();
+
+                Vehiculo resultadoUpdate = objectMapper.readValue(jsonResultado, Vehiculo.class);
+
+                assertEquals(resultadoUpdate.getTipo(), "moto");
+
+        }
 }

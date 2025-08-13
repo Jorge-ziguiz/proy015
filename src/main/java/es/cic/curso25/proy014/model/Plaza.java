@@ -3,7 +3,7 @@ package es.cic.curso25.proy014.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,7 +27,8 @@ public class Plaza {
     @OneToMany(mappedBy = "plaza", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
             CascadeType.REFRESH,
             CascadeType.REMOVE }, orphanRemoval = true)
-    @JsonBackReference
+
+    @JsonManagedReference
     private List<Vehiculo> vehiculos = new ArrayList<>();
 
     @Column(nullable = false)

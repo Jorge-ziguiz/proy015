@@ -1,6 +1,4 @@
 package es.cic.curso25.proy014.config;
-
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -19,12 +17,12 @@ public class SecurityConfig {
         @Bean
         public UserDetailsService UserDetailsService() {
                 var userAdmin = User.withUsername("admin")
-                                .password(passwordEncoder().encode("admin123"))
+                                .password(passwordEncoder().encode("12PasswordSuperSeguro43/"))
                                 .roles("ADMIN")
                                 .build();
 
                 var user = User.withUsername("user")
-                                .password(passwordEncoder().encode("user123"))
+                                .password(passwordEncoder().encode("12PasswordSeguro63/"))
                                 .roles("USER")
                                 .build();
                 return new InMemoryUserDetailsManager(userAdmin, user);
